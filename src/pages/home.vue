@@ -37,7 +37,7 @@
       <div class="nuls-home-content-head-right clearfix">
         <div class="nuls-home-content-head-left-head">
           <div class="clearfix">
-            <span><i class="nuls-img-icon nuls-img-block"></i></span><label>区块</label><a>更多</a>
+            <span><i class="nuls-img-icon nuls-img-block"></i></span><label>区块</label><router-link to="">更多</router-link>
           </div>
         </div>
         <div class="nuls-infomation-box blockInfomation">
@@ -115,7 +115,7 @@
 
     <div class="nuls-transaction-container">
       <div class="nuls-transaction-head clearfix"><span><i
-        class="nuls-img-icon nuls-img-block"></i></span><label>区块</label><a>更多</a></div>
+        class="nuls-img-icon nuls-img-block"></i></span><label>交易</label><router-link to="transactionList">更多</router-link></div>
       <ul class="nuls-transaction-list">
         <li class="yellow-card">
           <p>转帐</p>

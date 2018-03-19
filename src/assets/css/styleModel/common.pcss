@@ -5,6 +5,32 @@ body {
   background-color: #0b1422;
 }
 
+/*change define element ui style*/
+.el-breadcrumb__inner, .el-breadcrumb__inner a{
+  color:var(--font-white);
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner{
+  color:#88baff;
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner{
+  color:#88baff!important;
+}
+/*end change define element ui style*/
+
+
+
+.nuls-content{
+  width:var(--content-width);
+  margin:0 auto;
+  & nav{
+    margin:15px 0;
+  }
+  & .nuls-title{
+    color:var(--font-white);
+    text-align:center;
+    height:50px;
+  }
+}
 .nuls-img-icon {
   background: url(../img/nulsicon.png) no-repeat;
   display: inline-block;
@@ -18,6 +44,10 @@ body {
 
 .nuls-img-block {
   background-position: -8px -48px;
+}
+
+.nuls-img-three-point{
+  background-position: -49px -128px;
 }
 
 .nuls-img-right-action {
@@ -134,6 +164,7 @@ body {
     background-color: var(--light-blue);
     margin-bottom: 10px;
     border-left: 2px solid transparent;
+
     & p {
       padding-bottom: 13px;
       margin: 0;
@@ -151,7 +182,18 @@ body {
           vertical-align: text-top;
         }
       }
+
+
     }
+
+    &>div.list-foot{
+      text-align: center;
+      &>a{
+        width: 100%;
+        display: inline-block;
+      }
+    }
+
   }
 }
 
