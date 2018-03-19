@@ -1,0 +1,146 @@
+@import "pcsscommont.pcss";
+.nuls-home-content {
+  width:var(--content-width);
+  margin:0 auto;
+
+  /*主页内容顶部图表*/
+  & .nuls-home-content-head {
+
+    /*图标及标题*/
+    & >div> .nuls-home-content-head-left-head {
+      height: 80px;
+      position:relative;
+
+      &>div{
+        height:30px;
+        line-height:30px;
+        width:100%;
+        position:absolute;
+        bottom: 0;
+        &>span {
+          width:40px;
+          display:inline-block;
+          &>i{
+            vertical-align: middle;
+          }
+        }
+        &>label{
+          color:var(--font-white);
+          font-size:16px;
+          vertical-align: middle;
+        }
+        &>a{
+          vertical-align: middle;
+          font-size: 14px;
+          color:var(--font-blue);
+          float:right;
+        }
+      }
+
+    }
+
+
+    & .nuls-infomation-box{
+      margin-top:20px;
+    }
+
+    & .entireNetworkInfomation{
+      margin-right: 30px;
+    }
+
+    /*左边图表 全网信息*/
+    & .nuls-home-content-head-left {
+      width:50%;
+      float: left;
+      & .nuls-table{
+        padding:8px 30px 20px 30px;
+        color:var(--font-white);
+        font-size:14px;
+        background-color:var(--light-blue);
+        & .nuls-table-row{
+          display:table-row;
+
+
+          & .nuls-table-cell{
+            display: table-cell;
+            border-bottom: 1px solid #333f51;
+            width:1%;
+            height:33px;
+            padding:0 10px;
+            line-height: 33px;
+          }
+        }
+      }
+
+      & .nuls-transaction-history{
+        margin-top:20px;
+        height: 338px;
+      }
+
+    }
+
+    /*右边区块*/
+    & .nuls-home-content-head-right {
+
+      float:right;
+      width:50%;
+
+      & .nuls-block-list{
+        margin:0;
+        padding: 0;
+        color:var(--font-white);
+        font-size:14px;
+        & li{
+          list-style: none;
+          padding:16px 40px 0px 40px;
+          height: 69px;
+          margin-bottom:10px;
+          border-left: 2px solid #658ec7;
+          background-color: var(--light-blue);
+          &>div{
+            padding-bottom:16px;
+          }
+          & .nuls-table-cell{
+
+            display:table-cell;
+            width:1%;
+            & span{
+              color:var(--font-blue);
+              margin-left:5px;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+
+  & .nuls-transaction-container{
+    & .nuls-transaction-head{
+      position:relative;
+      height:60px;
+      line-height:60px;
+      & span{
+        width:40px;
+        display:inline-block;
+        & i{
+          vertical-align: text-top;
+        }
+      }
+      & label{
+        color:var(--font-white);
+      }
+
+      & a{
+        color:var(--font-blue);
+        text-decoration: none;
+        float:right;
+      }
+    }
+
+
+
+  }
+
+}

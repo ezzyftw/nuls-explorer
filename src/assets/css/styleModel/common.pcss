@@ -1,0 +1,157 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b1422;
+}
+
+.nuls-img-icon {
+  background: url(../img/nulsicon.png) no-repeat;
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.nuls-img-consensus {
+  background-position: -8px -8px;
+}
+
+.nuls-img-block {
+  background-position: -8px -48px;
+}
+
+.nuls-img-right-action {
+  background-position: -48px -48px;
+}
+
+.nuls-gray-img-icon {
+  background: url(../img/nulsfooticon.png) no-repeat;
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+}
+
+.nuls-gray-img-pigeon {
+  background-position: -42px -39px;
+}
+
+.nuls-gray-img-people {
+  background-position: -42px -120px;
+}
+
+.nuls-gray-img-head-portrait {
+  background-position: -42px -198px;
+}
+
+.nuls-gray-img-well-number {
+  background-position: -42px -278px;
+}
+
+.nuls-gray-img-three-tick {
+  background-position: -121px -39px;
+}
+
+.nuls-gray-img-arrows {
+  background-position: -121px -120px;
+}
+
+.nuls-gray-img--four-tick {
+  background-position: -121px -198px;
+}
+
+.nuls-gray-img-Capital-F {
+  background-position: -121px -278px;
+}
+
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.nuls-block-box {
+  border: 1px solid #658ec7;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.nuls-transaction-list {
+  margin: 0;
+  padding: 0;
+  /*共识奖励*/
+  & li.consensus-reward {
+    border-left-color: #1cc1bf;
+  }
+  /*代币交易*/
+  & li.tokens-trading {
+    border-left-color: #c351c2;
+  }
+  /*建立共识*/
+  & li.consensus-building {
+    border-left-color: #82db39;
+  }
+  /*委托共识*/
+  & li.entrust-consensus {
+    border-left-color: #4aca80;
+  }
+  /*停止共识*/
+  & li.stop-consensus {
+    border-left-color: #f6693e;
+  }
+  /*退出委托*/
+  & li.exit-delegate {
+    border-left-color: #f6a63e;
+  }
+  /*零钱换整*/
+  & li.change-money {
+    border-left-color: #5d56e0;
+  }
+  /*设置别名*/
+  & li.set-alias {
+    border-left-color: #8348d3;
+  }
+  /*黄牌*/
+  & li.yellow-card {
+    border-left-color: #f5c757;
+  }
+  /*红牌*/
+  & li.red-card {
+    border-left-color: #f64b3e;
+  }
+  & li {
+    list-style: none;
+    color: var(--font-white);
+    padding: 16px 40px 0px 40px;
+    background-color: var(--light-blue);
+    margin-bottom: 10px;
+    border-left: 2px solid transparent;
+    & p {
+      padding-bottom: 13px;
+      margin: 0;
+      & span:last-child {
+        text-align: right;
+      }
+      & span {
+        display: table-cell;
+        width: 1%;
+        & a {
+          color: var(--font-blue);
+          text-decoration: none;
+        }
+        & i {
+          vertical-align: text-top;
+        }
+      }
+    }
+  }
+}
+
