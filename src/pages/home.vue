@@ -37,7 +37,7 @@
       <div class="nuls-home-content-head-right clearfix">
         <div class="nuls-home-content-head-left-head">
           <div class="clearfix">
-            <span><i class="nuls-img-icon nuls-img-block"></i></span><label>区块</label><router-link to="">更多</router-link>
+            <span><i class="nuls-img-icon nuls-img-block"></i></span><label>区块</label><router-link to="/blockList">更多</router-link>
           </div>
         </div>
         <div class="nuls-infomation-box blockInfomation">

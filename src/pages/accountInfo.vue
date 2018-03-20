@@ -3,12 +3,21 @@
     <nav>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>交易列表</el-breadcrumb-item>
+        <el-breadcrumb-item>帐户信息</el-breadcrumb-item>
       </el-breadcrumb>
     </nav>
 
     <div class="nuls-title">
-      交易
+      帐户信息
+    </div>
+    <ul class="tx_description tx_border tx_background">
+      <li><span class="float_left">帐户地址</span><span class="float_right">0xf20255f9b5c0545029d7313f9b5c05450290247ed3ade7cb</span></li>
+      <li><span class="float_left">可用余额</span><a href="/" class="float_right">101.2156891 NULS</a></li>
+      <li><span class="float_left">冻结金额</span><a href="/" class="float_right">897.00 NULS</a></li>
+      <li><span class="float_left">交易数量</span><span class="float_right">890</span></li>
+    </ul>
+    <div class="segmentation">
+      <i class="nuls-img-icon nuls-img-transaction"></i><span>67笔交易</span>
     </div>
     <ul class="nuls-transaction-list">
       <li class="yellow-card">
@@ -45,17 +54,13 @@
         :total="100">
       </el-pagination>
     </div>
-
   </div>
-
 </template>
 
 <script>
-
-  export default {
-    name: "transactionRecord"
-  }
-
+    export default {
+        name: "blockDetail"
+    }
 </script>
 
 <style scoped>
