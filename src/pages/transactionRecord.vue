@@ -2,62 +2,160 @@
   <div class="nuls-content">
     <nav>
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>交易列表</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">{{$t("nav.index")}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t("second.transList")}}</el-breadcrumb-item>
       </el-breadcrumb>
     </nav>
 
     <div class="nuls-title">
-      交易
+      {{$t("second.transaction")}}
     </div>
-    <ul class="nuls-transaction-list">
-      <li class="yellow-card">
-        <p>转帐</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a></span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-      </li>
-      <li class="consensus-reward">
-        <p>共识奖励</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a>&nbsp;&nbsp;(确认次数:10)</span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-      </li>
-      <li class="change-money">
-        <p>转帐</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a></span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-        <p><span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span><i
-          class="nuls-img-icon nuls-img-right-action"></i></span><span><a>165aa4a5s6df4a8s5df4a5fas</a></span><span>0.072 NULS</span>
-        </p>
-        <p>
-          <span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span></span><span><a>165aa4a5s6df4a8s5df4a5fas</a></span><span>0.072 NULS</span>
-        </p>
-        <p><span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span></span><span></span><span>0.072 NULS</span></p>
-        <p><span>金额：0.07810676 NULS</span></p>
-        <div class="list-foot"><a><i class="nuls-img-icon nuls-img-three-point"></i></a></div>
-      </li>
+    <ul class="nuls-transaction-list" ref="contentInfo">
+      <!--class="yellow-card"-->
+    <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.status)">
+    <p>{{$t("transDetail.transTypeDetail.i"+txlist.status)}}</p>
+
+    <p><span><router-link :to="{path:'/transactionHash',query:{hash:txlist.hash}}">{{txlist.hash}}</router-link></span><span>{{txlist.time | formatDate}}</span></p>
+    <p><span>{{$t("second.block")}}：<router-link :to="{path:'/blockDetail',query:{height:txlist.blockHeight}}">{{txlist.blockHeight}}</router-link></span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;<a>{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</a></span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
+    <template v-if="txlist.inputs[0] || txlist.outputs[0]">
+      <div class="w100" :class="showScroll==key?'scrollHeight':'hideHeight'">
+        <div class="w25 float_left">
+          <p v-if="!txlist.inputs[0]">&nbsp;</p>
+          <p v-for="inputlist in txlist.inputs"><span>
+            <router-link :to="{path:'/accountInfo',query:{address:inputlist.address}}">{{inputlist.address}}</router-link>
+          </span></p>
+        </div>
+        <div class="w20 float_left center">
+          <i class="nuls-img-icon nuls-img-right-action"></i>
+        </div>
+        <div class="w55 float_left">
+          <p v-for="outputlist in txlist.outputs"><span>
+            <router-link :to="{path:'/accountInfo',query:{address:outputlist.address}}">{{outputlist.address}}</router-link>
+          </span><span>{{outputlist.value|getInfactCoin}} NULS</span></p>
+        </div>
+      </div>
+    </template>
+    <div class="clear"></div>
+    <p><span>{{$t("second.amount")}}：{{txlist | formatTxAmount}} NULS</span></p>
+    <div v-if="txlist.inputs[5] || txlist.outputs[5]" class="list-foot"><a @click="showmore(key)"><i class="nuls-img-icon nuls-img-three-point pointer"></i></a></div>
+</li>
     </ul>
     <div class="text-align-right">
-      <el-pagination
-        background
-        prev-text="上一页"
-        next-text="下一页"
-        layout="total,prev, pager, next,jumper"
-        :total="100">
+    <el-pagination
+      background
+      :prev-text="$t('page.previous')"
+      :next-text="$t('page.next')"
+      layout="total,prev, pager, next,jumper"
+      @current-change="nulstxlist"
+      :page-size=this.pageSize
+      :total=this.totalDataNumber>
       </el-pagination>
     </div>
 
   </div>
 
 </template>
-
 <script>
-
+  import {getTxList,getTxByHash,getBlockList,getAllConsensus} from "../assets/js/nuls.js";
+  import {formatDate,formatTxClass,getInfactCoin} from '../assets/js/util.js';
   export default {
-    name: "transactionRecord"
+    name: "transactionRecord",
+    data () {
+      return {
+        showScroll: -1,
+        totalDataNumber: 0,
+        pageSize: 20,
+        transList: [{
+          showClass: 1,
+          hash: '',
+          type: '',
+          index: '',
+          time: '2018-01-01 00:00:00',
+          blockHeight: '',
+          fee: '',
+          value: '',
+          inputs: [{txHash: '', index: '', address: '', value: '', createTime: '', lockTime: '', type: '', status: ''}],
+          outputs: [{
+            txHash: '',
+            index: '',
+            address: '',
+            value: '',
+            createTime: '',
+            lockTime: '',
+            type: '',
+            status: ''
+          }],
+          transferType: '',
+          remark: '',
+          status: 0,
+          confirmCount: '',
+          size: ''
+        }]
+      }
+    },
+    filters: {
+      formatDate(time) {
+        var date = new Date(time);
+        return formatDate(date, "yyyy-MM-dd hh:mm");
+      },
+      arrayLength(arr){
+        return arr?arr.length:0;
+      },
+      formatTxAmount(txlist){
+        var outputlist = txlist.outputs,
+            inputlist = txlist.inputs,
+            amout = 0,
+            inplength = inputlist.length,
+            outlength = outputlist.length;
+        for(var i=0;i < outlength;i++){
+          var txout = outputlist[i];
+          amout+= txout.value;
+          for(var j=0;j < inplength;j++){
+            var txin = inputlist[j];
+            if(txin.address == txout.address){
+              amout-= txout.value;
+              break;
+            }
+          }
+        }
+        return getInfactCoin(amout);
+      },
+      getInfactCoin(count){
+        return getInfactCoin(count);
+      }
+    },
+    created:function(){
+      this.nulstxlist();
+    },
+    methods: {
+      formatTxClass:function(status){
+        return formatTxClass(status);
+      },
+      showmore: function(v){
+        this.showScroll =this.showScroll=== -1?v:-1;
+      },
+      nulstxlist:function(pageNumber){
+        var _self = this;
+        getTxList({"pageNumber":pageNumber,"pageSize":_self.pageSize,"type":1},function(res){
+          if(res.success){
+            if(res.data.list){
+              _self.transList=res.data.list;
+              _self.totalDataNumber = res.data.total;
+            }else{
+              _self.$notify({title: '提示',message: '暂无数据',type: 'warning'});
+            }
+            return;
+          }else{
+            _self.$alert('数据获取失败，请检查网络链接', '提示', {confirmButtonText: '确定'});
+          }
+        });
+      }
+    }
   }
 
 </script>
 
-<style scoped>
-
+<style>
+.hideHeight{max-height: 130px;overflow: hidden}
+.scrollHeight{height: auto;}
 </style>

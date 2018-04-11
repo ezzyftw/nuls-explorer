@@ -2,47 +2,46 @@
   <div class="nuls-content">
     <nav>
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>帐户信息</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">{{$t("nav.index")}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t("accountInfo.accountInfo")}}</el-breadcrumb-item>
       </el-breadcrumb>
     </nav>
 
     <div class="nuls-title">
-      帐户信息
+      {{$t("accountInfo.accountInfo")}}
     </div>
     <ul class="tx_description tx_border tx_background">
-      <li><span class="float_left">帐户地址</span><span class="float_right">0xf20255f9b5c0545029d7313f9b5c05450290247ed3ade7cb</span></li>
-      <li><span class="float_left">可用余额</span><a href="/" class="float_right">101.2156891 NULS</a></li>
-      <li><span class="float_left">冻结金额</span><a href="/" class="float_right">897.00 NULS</a></li>
-      <li><span class="float_left">交易数量</span><span class="float_right">890</span></li>
+      <li><span class="float_left">{{$t("accountInfo.address")}}</span><span class="float_right">{{address}}</span></li>
+      <li><span class="float_left">{{$t("accountInfo.canUseBalance")}}</span><span class="float_right">{{accountInfo.balance|getInfactCoin}} NULS</span></li>
+      <li><span class="float_left">{{$t("accountInfo.freezeBalance")}}</span><span class="float_right">{{accountInfo.usable|getInfactCoin}} NULS</span></li>
+      <li><span class="float_left">{{$t("accountInfo.transactionCount")}}</span><span class="float_right">{{txCount}}</span></li>
     </ul>
     <div class="segmentation">
-      <i class="nuls-img-icon nuls-img-transaction"></i><span>67笔交易</span>
+      <i class="nuls-img-icon nuls-img-transaction"></i><span>{{txCount}}{{$t("second.transactions")}}</span>
     </div>
     <ul class="nuls-transaction-list">
-      <li class="yellow-card">
-        <p>转帐</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a></span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-      </li>
-      <li class="consensus-reward">
-        <p>共识奖励</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a>&nbsp;&nbsp;(确认次数:10)</span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-      </li>
-      <li class="change-money">
-        <p>转帐</p>
-        <p><span><a>a46w5e4ra1s65df4a86df51a6sd4f56af56asd4fas4df5a64d</a></span><span>2018-02-03 19:30:26</span></p>
-        <p><span>区块：<a>1282</a></span><span>输入/输出：<a>4/2</a></span><span>手续费:0.08769 NULS</span></p>
-        <p><span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span><i
-          class="nuls-img-icon nuls-img-right-action"></i></span><span><a>165aa4a5s6df4a8s5df4a5fas</a></span><span>0.072 NULS</span>
-        </p>
-        <p>
-          <span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span></span><span><a>165aa4a5s6df4a8s5df4a5fas</a></span><span>0.072 NULS</span>
-        </p>
-        <p><span><a>A2SD1F5A4A133SA54DF2A135FDA4</a></span><span></span><span></span><span>0.072 NULS</span></p>
-        <p><span>金额：0.07810676 NULS</span></p>
-        <div class="list-foot"><a><i class="nuls-img-icon nuls-img-three-point"></i></a></div>
+      <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.status)">
+        <p>{{$t("transDetail.transTypeDetail.i"+txlist.status)}}</p>
+
+        <p><span><router-link :to="{path:'/transactionHash',query:{hash:txlist.hash}}">{{txlist.hash}}</router-link></span><span>{{txlist.time | formatDate}}</span></p>
+        <p><span>{{$t("second.block")}}：<router-link :to="{path:'/blockDetail',query:{height:txlist.blockHeight}}">{{txlist.blockHeight}}</router-link></span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;<a>{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</a></span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
+        <template v-if="txlist.inputs[0] || txlist.outputs[0]">
+          <div class="w100" :class="showScroll==key?'scrollHeight':'hideHeight'">
+            <div class="w25 float_left">
+              <p v-if="!txlist.inputs[0]">&nbsp;</p>
+              <p v-for="inputlist in txlist.inputs"><span class="pointer" @click="reloadAccount(inputlist.address)">{{inputlist.address}}</span></p>
+            </div>
+            <div class="w20 float_left center">
+              <i class="nuls-img-icon nuls-img-right-action"></i>
+            </div>
+            <div class="w55 float_left">
+              <p v-for="outputlist in txlist.outputs"><span class="pointer" @click="reloadAccount(outputlist.address)">{{outputlist.address}}</span><span>{{outputlist.value|getInfactCoin}} NULS</span></p>
+            </div>
+          </div>
+        </template>
+        <div class="clear"></div>
+        <p><span>{{$t("second.amount")}}：{{txlist | formatTxAmount}} NULS</span></p>
+        <div v-if="txlist.inputs[5] || txlist.outputs[5]" class="list-foot"><a @click="showmore(key)"><i class="nuls-img-icon nuls-img-three-point pointer"></i></a></div>
       </li>
     </ul>
     <div class="text-align-right">
@@ -51,18 +50,146 @@
         prev-text="上一页"
         next-text="下一页"
         layout="total,prev, pager, next,jumper"
-        :total="100">
-      </el-pagination>
+      @current-change="nulstxlist"
+      :page-size=this.pageSize
+      :total=this.totalDataNumber>
+    </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
+import {getAccountByAddress,getTxList} from "../assets/js/nuls.js";
+import {formatDate,getInfactCoin,formatTxClass,formatTxStatus} from '../assets/js/util.js';
+import {brotherComponents} from '../assets/js/public.js';
     export default {
-        name: "blockDetail"
+      name: "blockDetail",
+      data() {
+        return {
+          address: '',
+          txCount: 0,
+          totalDataNumber: 0,
+          pageSize: 20,
+          showScroll: -1,
+          accountInfo: {balance: 0, usable: 0, locked: 0},
+          transList: [{
+            hash: '',
+            type: '',
+            index: '',
+            time: '',
+            blockHeight: '',
+            fee: '',
+            value: '',
+            inputs: [{
+              txHash: '',
+              index: '',
+              address: '',
+              value: '',
+              createTime: '',
+              lockTime: '',
+              type: '',
+              status: ''
+            }],
+            outputs: [{
+              txHash: '',
+              index: '',
+              address: '',
+              value: '',
+              createTime: '',
+              lockTime: '',
+              type: '',
+              status: ''
+            }],
+            transferType: '',
+            remark: '',
+            status: 0,
+            confirmCount: '',
+            size: ''
+          }]
+        }
+      },
+      filters: {
+        formatDate(time) {
+          var date = new Date(time);
+          return formatDate(date, "yyyy-MM-dd hh:mm");
+        },
+        formatTxStatus(status){
+          return formatTxStatus(status);
+        },
+        arrayLength(arr){
+          return arr?arr.length:0;
+        },
+        formatTxAmount(txlist){
+          var outputlist = txlist.outputs,
+            inputlist = txlist.inputs,
+            amout = 0,
+            inplength = inputlist.length,
+            outlength = outputlist.length;
+          for(var i=0;i < outlength;i++){
+            var txout = outputlist[i];
+            amout+= txout.value;
+            for(var j=0;j < inplength;j++){
+              var txin = inputlist[j];
+              if(txin.address == txout.address){
+                amout-= txout.value;
+                break;
+              }
+            }
+          }
+          return getInfactCoin(amout);
+        },
+        getInfactCoin(count){
+          return getInfactCoin(count);
+        }
+      },
+      created: function () {
+        var _self = this;
+        _self.address = _self.$route.query.address;
+        _self.nulstxlist();
+        _self.nulsloadDetail();
+        brotherComponents.$on('searchAccountByAddress', function (v) {
+          _self.address = v;
+          _self.nulstxlist();
+          _self.nulsloadDetail();
+        });
+      },
+      methods: {
+        formatTxClass:function(status){
+          return formatTxClass(status);
+        },
+        showmore: function(v){
+          this.showScroll =this.showScroll=== -1?v:-1;
+        },
+        reloadAccount: function(address){
+          this.address = address;
+          this.nulstxlist();
+          this.nulsloadDetail();
+        },
+        nulsloadDetail: function(){
+          var _self = this;
+          getAccountByAddress({"address":_self.address},function(res){
+            if (res.success) {
+              _self.accountInfo = res.data;
+            }
+          });
+        },
+        nulstxlist: function (pageNumber) {
+          var _self = this;
+          getTxList({"pageNumber":pageNumber,"pageSize":_self.pageSize,"address":_self.address},function(res){
+            if(res.success){
+              _self.transList=res.data.list;
+              _self.totalDataNumber = res.data.total;
+              _self.txCount = _self.totalDataNumber;
+              return;
+            }
+            _self.$alert('数据获取失败，请检查网络链接', '提示', {confirmButtonText: '确定'});
+          });
+        }
+      }
     }
 </script>
 
-<style scoped>
-
+<style>
+.hideHeight{max-height: 130px;overflow: hidden}
+.scrollHeight{height: auto;}
 </style>

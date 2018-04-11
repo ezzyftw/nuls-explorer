@@ -3,24 +3,20 @@
     <nav>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">{{$t("nav.index")}}</el-breadcrumb-item>
-        <el-breadcrumb-item>{{$t("blockList.blockList")}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t("nav.currencyAccount")}}</el-breadcrumb-item>
       </el-breadcrumb>
     </nav>
-    <div class="nuls-title">
-      {{$t("blockList.blockList")}}
-    </div>
+    <div class="nuls-title">{{$t("nav.currencyAccount")}}</div>
     <div>
       <ul class="nuls-ul-table">
         <li class="head">
           <span>
             <ul class="nuls-ul-sub-table">
               <li>
-                <span>{{$t("blockList.height")}}</span>
-                <span>{{$t("blockList.time")}}</span>
-                <span>{{$t("blockList.transactionCount")}}</span>
-                <span>{{$t("blockList.blockNodeName")}}</span>
-                <span>{{$t("blockList.size")}}(byte)</span>
-                <span>{{$t("blockList.blockReward")}}</span>
+                <span >{{$t("currencyAccount.number")}}</span>
+                <span >{{$t("currencyAccount.address")}}</span>
+                <span>{{$t("currencyAccount.balance")}}</span>
+                <span >{{$t("currencyAccount.transactionCount")}}</span>
               </li>
             </ul>
           </span>
@@ -29,14 +25,10 @@
           <span>
             <ul class="nuls-ul-sub-table">
               <li v-for="block in blockList">
-                <span><router-link :to="{path:'/blockDetail',query:{height:block.height}}">{{block.height}}</router-link></span>
-                <span>{{block.time | formatDate}}</span>
+                <span>{{block.id}}</span>
+                <span><router-link :to="{path:'/accountInfo',query:{address:block.address}}">{{block.address}}</router-link></span>
+                <span class="text-align-left text-padding-7">{{block.balance | getInfactCoin}}</span>
                 <span>{{block.txCount}}</span>
-                <span>
-                  <router-link :to="{path:'/consensusNode',query:{address:block.packingAddress,type:2}}">{{block.packingAddress | formatString}}</router-link>
-                </span>
-                <span>{{block.size}}</span>
-                <span>{{block.reward|getInfactCoin}} NULS</span>
               </li>
             </ul>
           </span>
@@ -48,28 +40,26 @@
             :prev-text="$t('page.previous')"
             :next-text="$t('page.next')"
             layout="total,prev, pager, next,jumper"
-            @current-change="nulsGetBlockList"
-            :page-size=this.pageSize
-            :total=this.totalDataNumber>
-          </el-pagination>
+          @current-change="nulsGetBalanceListRank"
+          :page-size=this.pageSize
+          :total=this.totalDataNumber>
+        </el-pagination>
           </span>
         </li>
       </ul>
-
     </div>
   </div>
 </template>
-
 <script>
-  import {getBlockList} from "../assets/js/nuls.js";
-  import {formatDate,formatString,getInfactCoin} from '../assets/js/util.js';
+  import {getBalanceListRank} from "../assets/js/nuls.js";
+  import {formatDate,getInfactCoin} from '../assets/js/util.js';
   export default {
-    name: "blockList",
+    name: "cashAccount",
     data () {
       return {
-        blockList: [{height:0,time:'2018-01-01 00:00:00',packingAddress:'xxxxxx',txCount:0,reward:0,size:0}],
+        blockList: [{id:0,address:'',balance:'',txCount:0,createTime:0}],
         totalDataNumber: 0,
-        pageSize: 20
+        pageSize: 20,
       }
     },
     filters: {
@@ -77,20 +67,17 @@
         var date = new Date(time);
         return formatDate(date, "yyyy-MM-dd hh:mm");
       },
-      formatString(str){
-        return formatString(str);
-      },
-      getInfactCoin(count) {
+      getInfactCoin(count){
         return getInfactCoin(count);
       }
     },
     created:function(){
-      this.nulsGetBlockList();
+      this.nulsGetBalanceListRank();
     },
     methods: {
-      nulsGetBlockList(pageNumber){
+      nulsGetBalanceListRank(pageNumber){
         var _self = this;
-        getBlockList({"pageNumber":pageNumber,"pageSize":_self.pageSize},function(res){
+        getBalanceListRank({"pageNumber":pageNumber,"pageSize":_self.pageSize},function(res){
           if(res.success){
             if(res.data.list){
               _self.blockList = res.data.list;
@@ -98,7 +85,6 @@
             }else{
               _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.noMessage"),type: 'warning'});
             }
-            return;
           }else{
             _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
           }
@@ -107,6 +93,11 @@
     }
   }
 </script>
-
 <style>
+  ul.nuls-ul-table>li > span>ul.nuls-ul-sub-table>li>span:nth-child(1){
+    width:6%;
+  }
+  ul.nuls-ul-table>li > span>ul.nuls-ul-sub-table>li>span:nth-child(2){
+    width:30%;
+  }
 </style>

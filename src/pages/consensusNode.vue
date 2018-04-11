@@ -2,145 +2,138 @@
   <div class="nuls-content">
     <nav>
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>共识节点</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">{{$t("nav.index")}}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{$t("consensusNode.consensusNode")}}</el-breadcrumb-item>
       </el-breadcrumb>
     </nav>
 
     <div class="nuls-title">
-      共识节点
+      {{$t("consensusNode.consensusNode")}}
     </div>
     <ul class="tx_description tx_border tx_background">
-      <li><span class="float_left">帐户信息</span><span class="float_right">0xf20255f9b5c0545029d7313f9b5c05450290247ed3ade7cb</span></li>
-      <li><span class="float_left">出块地址</span><span  class="float_right">d4f85a6s4df6a54f5a4s6f4asd4f5as45f6a4s5f4a5sd4fa4sd6f4a6s4df5as64df</span></li>
-      <li><span class="float_left">节点名称</span><span  class="float_right">雷霆节点</span></li>
-      <li><span class="float_left">共识状态</span><span class="float_right">共识中</span></li>
-      <li><span class="float_left">出块数量</span><span class="float_right">30,213 blocks</span></li>
-      <li><span class="float_left">交易数量</span><span class="float_right">32,1546,566 txns</span></li>
-      <li><span class="float_left">保证金</span><span class="float_right">266,897,00 NULS</span></li>
+      <li><span class="float_left">{{$t("consensusNode.accountInfo")}}</span><a href="/accountInfo" class="float_right">{{consensusDetail.packingAddress}}</a></li>
+      <li><span class="float_left">{{$t("consensusNode.blockAddress")}}</span><span  class="float_right">{{consensusDetail.agentAddress}}</span></li>
+      <li><span class="float_left">{{$t("consensusNode.nodeName")}}</span><span  class="float_right">{{consensusDetail.agentName}}</span></li>
+      <li><span class="float_left">{{$t("consensusNode.consensusStatus")}}</span><span class="float_right">{{consensusDetail.status|formatConsensusStatus}}</span></li>
+      <li><span class="float_left">{{$t("consensusNode.blockCount")}}</span><span class="float_right">{{consensusDetail.packedCount}} blocks</span></li>
+      <li><span class="float_left">{{$t("consensusNode.transactionCount")}}</span><span class="float_right">{{consensusDetail.creditRatio}} txns</span></li>
+      <li><span class="float_left">{{$t("consensusNode.margin")}}</span><span class="float_right">{{consensusDetail.owndeposit|getInfactCoin}} NULS</span></li>
     </ul>
     <div style="height:40px;"></div>
     <ul class="nuls-ul-table">
       <li class="head">
-        <span>高度</span>
-        <span>时间</span>
-        <span>交易数量</span>
-        <span>大小(byte)</span>
-        <span>块收益</span>
+        <span>
+          <ul class="nuls-ul-sub-table">
+            <li>
+              <span>{{$t("blockList.height")}}</span>
+              <span>{{$t("blockList.time")}}</span>
+              <span>{{$t("blockList.transactionCount")}}</span>
+              <span>{{$t("blockList.size")}}(byte)</span>
+              <span>{{$t("blockList.blockReward")}}</span>
+            </li>
+          </ul>
+        </span>
+
       </li>
       <li class="content">
-        <span><router-link to="/blockDetail">5170115</router-link></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
+        <span>
+          <ul class="nuls-ul-sub-table">
+            <li v-for="block in blockList">
+              <span><router-link :to="{path:'/blockDetail',query:{height:block.height}}">{{block.height}}</router-link></span>
+              <span>{{block.time | formatDate}}</span>
+              <span>{{block.txCount}}</span>
+              <span><router-link to="/consensusNode">{{block.packingAddress | formatString}}</router-link></span>
+              <span>{{block.size}}</span>
+              <span>{{block.reward}} NULS</span>
+            </li>
+          </ul>
+        </span>
       </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-      <li class="content">
-        <span><a>5170115</a></span>
-        <span>2018-03-02 12:32:12</span>
-        <span>16820</span>
-
-        <span>800,000</span>
-        <span>30.13123 NULS</span>
-      </li>
-
-
-
       <li class="foot">
-        <span></span>
         <span>
             <el-pagination
               background
-              prev-text="上一页"
-              next-text="下一页"
+              :prev-text="$t('page.previous')"
+              :next-text="$t('page.next')"
               layout="total,prev, pager, next,jumper"
-              :total="100">
+              @current-change="nulsGetBlockList"
+              :page-size=this.pageSize
+              :total=this.totalDataNumber>
             </el-pagination>
           </span>
       </li>
     </ul>
   </div>
 </template>
-
 <script>
-    export default {
-        name: "blockDetail"
+import {getBlockListAddressAll,getConsensusAgentDetail} from "../assets/js/nuls.js";
+import {formatDate,formatString,formatConsensusStatus,getInfactCoin} from '../assets/js/util.js';
+export default {
+  name: "blockDetail",
+  data () {
+    return {
+      consensusDetail: {agentId:'',agentAddress:'',agentName:'',status:'',packingAddress:'',packedCount:'',totalDeposit:'',owndeposit:''},
+      blockList: [{height:0,time:'',packingAddress:'',txCount:0,reward:0,size:0}],
+      totalDataNumber: 0,
+      pageSize: 20,
+      address: '',
+      type: 1
     }
+  },
+  filters: {
+    formatDate(time) {
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm");
+    },
+    formatString(str){
+      return formatString(str);
+    },
+    formatConsensusStatus(status){
+      return formatConsensusStatus(status);
+    },
+    getInfactCoin(count){
+      return getInfactCoin(count);
+    }
+  },
+  created:function(){
+    this.address = this.$route.query.address;
+    this.type = this.$route.query.type;
+    this.nulsGetBlockList();
+    this.nulsGetConsensusDetail();
+  },
+  methods: {
+    nulsGetBlockList(pageNumber){
+      var _self = this;
+      getBlockListAddressAll({"pageNumber":pageNumber,"pageSize":_self.pageSize,"address":_self.address,"type":_self.type},function(res){
+        if(res.success){
+          if(res.data.list){
+            _self.blockList = res.data.list;
+            _self.totalDataNumber = res.data.total;
+          }else{
+            _self.$notify({title: '提示',message: '共识节点出块数据获取失败',type: 'warning'});
+          }
+        }
+      });
+    },
+    nulsGetConsensusDetail(){
+      var _self = this;
+      getConsensusAgentDetail({"address":_self.address},function(res){
+        if(res.success){
+          if(res.data){
+            _self.consensusDetail = res.data;
+          }else{
+            _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.consensusDetail"),type: 'warning'});
+          }
+          return;
+        }
+        _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
+      });
+    }
+  }
+}
 </script>
-
-<style scoped>
-
+<style>
+  ul.nuls-ul-table li > span{
+    width:6.8%;
+  }
 </style>
