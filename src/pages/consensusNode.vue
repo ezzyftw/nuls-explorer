@@ -11,7 +11,9 @@
       {{$t("consensusNode.consensusNode")}}
     </div>
     <ul class="tx_description tx_border tx_background">
-      <li><span class="float_left">{{$t("consensusNode.accountInfo")}}</span><a href="/accountInfo" class="float_right">{{consensusDetail.packingAddress}}</a></li>
+      <li><span class="float_left">{{$t("consensusNode.accountInfo")}}</span>
+        <router-link :to="{path:'/accountInfo',query:{address:consensusDetail.packingAddress}}">{{consensusDetail.packingAddress}}</router-link>
+      </li>
       <li><span class="float_left">{{$t("consensusNode.blockAddress")}}</span><span  class="float_right">{{consensusDetail.agentAddress}}</span></li>
       <li><span class="float_left">{{$t("consensusNode.nodeName")}}</span><span  class="float_right">{{consensusDetail.agentName}}</span></li>
       <li><span class="float_left">{{$t("consensusNode.consensusStatus")}}</span><span class="float_right">{{consensusDetail.status|formatConsensusStatus}}</span></li>
@@ -42,9 +44,8 @@
               <span><router-link :to="{path:'/blockDetail',query:{height:block.height}}">{{block.height}}</router-link></span>
               <span>{{block.time | formatDate}}</span>
               <span>{{block.txCount}}</span>
-              <span><router-link to="/consensusNode">{{block.packingAddress | formatString}}</router-link></span>
               <span>{{block.size}}</span>
-              <span>{{block.reward}} NULS</span>
+              <span>{{block.reward |getInfactCoin}} NULS</span>
             </li>
           </ul>
         </span>
@@ -83,7 +84,7 @@ export default {
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm");
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     formatString(str){
       return formatString(str);
@@ -110,7 +111,7 @@ export default {
             _self.blockList = res.data.list;
             _self.totalDataNumber = res.data.total;
           }else{
-            _self.$notify({title: '提示',message: '共识节点出块数据获取失败',type: 'warning'});
+            _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.consensusDetail"),type: 'warning'});
           }
         }
       });

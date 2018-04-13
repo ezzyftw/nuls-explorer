@@ -10,6 +10,7 @@
   import Foot from "../components/Foot";
   export default {
     name: "major",
+    data() {return {};},
     components: {Foot, Head}
   }
 </script>

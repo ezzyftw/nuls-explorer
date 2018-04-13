@@ -75,7 +75,7 @@
     filters: {
       formatDate(time) {
         var date = new Date(time);
-        return formatDate(date, "yyyy-MM-dd hh:mm");
+        return formatDate(date, "yyyy-MM-dd hh:mm:ss");
       },
       formatString(str){
         return formatString(str);
@@ -98,7 +98,6 @@
             }else{
               _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.noMessage"),type: 'warning'});
             }
-            return;
           }else{
             _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
           }

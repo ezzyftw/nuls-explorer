@@ -73,13 +73,15 @@ export function formatUTXOStatus(status){
     case 1:
       return "Locked";
     case 2:
+      return "Locked";
+    case 3:
       return "Spent";
     default:
       return "Unknown";
   }
 }
 export function formatUTXOClass(status){
-  return status==2?"pointer baseColor":"enableColor";
+  return status==3?"pointer baseColor":"enableColor";
 }
 export function formatTxtatus(status){
   switch (status){

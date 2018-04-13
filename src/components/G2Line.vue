@@ -1,5 +1,4 @@
 <template>
-  <!--此处的id用变量，方便同一页面引用多次相同的组件-->
   <div :id="id"></div>
 </template>
 
@@ -8,21 +7,13 @@
 
   G2.Global.setTheme('dark');
   export default {
-    data() {
-      return {
-        chart: null
-      };
-    },
+    data() {return {};},
     props: {
       charData: {
         type: Array,
         default: function () {
           return {
-            data: [
-              {'day': '2018-02-11', 'value': 5},
-              {'day': '2018-02-12', 'value': 7},
-              {'day': '2018-02-13', 'value': 9},
-              ]
+            data: []
           };
         }
       },
@@ -70,8 +61,13 @@
             range: [0, 1],
             alias: _self.$t("notice.transDate"),
             formatter: val => {
-              var valueDate=new Date(val);
-              return (valueDate.getFullYear()+"-"+(parseInt(valueDate.getMonth())+1)+"-"+valueDate.getDay());
+              if(val){
+                var valueDate=new Date(val);
+                return (valueDate.getFullYear()+"-"+(parseInt(valueDate.getMonth())+1)+"-"+valueDate.getDay());
+              }else{
+                return "";
+              }
+
             },
             nice: false
           }

@@ -29,22 +29,17 @@
         <li class="content">
           <span>
             <ul class="nuls-ul-sub-table">
-              <li v-for="block in blockList">
-                <span>{{block.id}}</span>
-                <span><router-link :to="{path:'/consensusNode',query:{address:block.consensusAddress,type:1}}">{{block.consensusAddress | formatString}}</router-link></span>
+              <li v-for="(block,key) in blockList">
+                <span>{{key+1}}</span>
+                <span><router-link :to="{path:'/consensusNode',query:{address:block.consensusAddress,type:2}}">{{block.consensusAddress | formatString}}</router-link></span>
                 <span>{{block.minedCount}}</span>
-                <span class="text-align-left text-padding-5">{{block.reward | getInfactCoin}}</span>
+                <span>{{block.reward | getInfactCoin}}</span>
                 <span>{{block.lastHeight}}</span>
                 <span>{{$t("consensusNode.consensusFormatter.i"+block.consensusStatus)}}</span>
               </li>
-
             </ul>
           </span>
-
         </li>
-
-
-
         <li class="foot">
           <span>
           <el-pagination

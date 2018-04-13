@@ -12,7 +12,7 @@
       {{$t("transDetail.transDetail")}}
     </div>
     <ul class="tx_description tx_border tx_background">
-      <li><span class="float_left">{{$t("transDetail.transType")}}</span><span class="float_right">{{$t("transDetail.transTypeDetail.i"+txdetail.type)}}</span></li>
+      <li><span class="float_left">{{$t("transDetail.transType")}}</span><span class="float_right">{{$t("transDetail.transTypeDetail.i"+txdetail.status)}}</span></li>
       <li><span class="float_left">{{$t("transDetail.transHash")}}</span><span  class="float_right">{{hash}}</span></li>
       <li><span class="float_left">{{$t("transDetail.transHeight")}}</span><span class="float_right"><router-link :to="{path:'/blockDetail',query:{height:txdetail.blockHeight}}">{{txdetail.blockHeight}}</router-link></span></li>
       <li><span class="float_left">{{$t("transDetail.transConfirmCount")}}</span><span class="float_right">{{txdetail.confirmCount}}</span></li>
@@ -31,7 +31,7 @@
           </li>
           <li v-for="inplist in txdetail.inputs">
             <router-link :to="{path:'/accountInfo',query:{address:inplist.address}}">{{inplist.address}}</router-link>
-            <span class="float_right" @click="hashDetail(inplist.txHash)">（{{inplist.value | getInfactCoin}}&nbsp;-&nbsp;<span class="baseColor pointer">Output</span>）</span>
+            <span class="float_right">（{{inplist.value | getInfactCoin}}&nbsp;-&nbsp;<span @click="hashDetail(inplist.fromHash)" class="baseColor pointer">Output</span>）</span>
           </li>
         </ul>
       </div>
@@ -44,7 +44,7 @@
           </li>
           <li v-for="outlist in txdetail.outputs">
             <router-link :to="{path:'/accountInfo',query:{address:outlist.address}}">{{outlist.address}}</router-link>
-            <span class="float_right" @click="hashDetail(outlist.txHash)">（{{outlist.value | getInfactCoin}}&nbsp;-&nbsp;<span v-bind:class="formatUTXOClass(outlist.status)">{{outlist.status|formatUTXOStatus}}</span>）</span>
+            <span class="float_right">（{{outlist.value | getInfactCoin}}&nbsp;-&nbsp;<span @click="toSpentByHash(outlist.status,outlist.index,outlist.txHash)" v-bind:class="formatUTXOClass(outlist.status)">{{outlist.status|formatUTXOStatus}}</span>）</span>
           </li>
         </ul>
       </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {getTxList,getTxByHash} from "../assets/js/nuls.js";
+import {getTxList,getTxByHash,getTxSpentHashDetail} from "../assets/js/nuls.js";
 import {formatDate,getInfactCoin,formatUTXOStatus,formatUTXOClass} from '../assets/js/util.js';
 import {brotherComponents} from '../assets/js/public.js';
     export default {
@@ -94,7 +94,7 @@ import {brotherComponents} from '../assets/js/public.js';
       filters: {
         formatDate(time) {
           var date = new Date(time);
-          return formatDate(date, "yyyy-MM-dd hh:mm");
+          return formatDate(date, "yyyy-MM-dd hh:mm:ss");
         },
         getInfactCoin(count) {
           return getInfactCoin(count);
@@ -125,6 +125,18 @@ import {brotherComponents} from '../assets/js/public.js';
         },
         formatUTXOClass(status){
           return formatUTXOClass(status);
+        },
+        toSpentByHash: function(status,index,hash){
+          if(status == 3){
+            var _self = this;
+            getTxSpentHashDetail({"txHash":hash,"index":index},function(res){
+              if (res.success) {
+                _self.txdetail = res.data;
+              }else{
+                _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
+              }
+            });
+          }
         },
         nulstxdetail: function (pageNumber) {
           var _self = this;

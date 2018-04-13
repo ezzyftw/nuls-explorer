@@ -12,11 +12,11 @@
     </div>
     <ul class="nuls-transaction-list" ref="contentInfo">
       <!--class="yellow-card"-->
-    <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.status)">
-    <p>{{$t("transDetail.transTypeDetail.i"+txlist.status)}}</p>
+    <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.type)">
+    <p>{{$t("transDetail.transTypeDetail.i"+txlist.type)}}</p>
 
     <p><span><router-link :to="{path:'/transactionHash',query:{hash:txlist.hash}}">{{txlist.hash}}</router-link></span><span>{{txlist.time | formatDate}}</span></p>
-    <p><span>{{$t("second.block")}}：<router-link :to="{path:'/blockDetail',query:{height:txlist.blockHeight}}">{{txlist.blockHeight}}</router-link></span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;<a>{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</a></span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
+    <p><span>{{$t("second.block")}}：<router-link :to="{path:'/blockDetail',query:{height:txlist.blockHeight}}">{{txlist.blockHeight}}</router-link></span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
     <template v-if="txlist.inputs[0] || txlist.outputs[0]">
       <div class="w100" :class="showScroll==key?'scrollHeight':'hideHeight'">
         <div class="w25 float_left">
@@ -36,7 +36,7 @@
       </div>
     </template>
     <div class="clear"></div>
-    <p><span>{{$t("second.amount")}}：{{txlist | formatTxAmount}} NULS</span></p>
+    <p><span>{{$t("second.amount")}}{{txlist | formatTxAmount}} NULS</span></p>
     <div v-if="txlist.inputs[5] || txlist.outputs[5]" class="list-foot"><a @click="showmore(key)"><i class="nuls-img-icon nuls-img-three-point pointer"></i></a></div>
 </li>
     </ul>
@@ -96,7 +96,7 @@
     filters: {
       formatDate(time) {
         var date = new Date(time);
-        return formatDate(date, "yyyy-MM-dd hh:mm");
+        return formatDate(date, "yyyy-MM-dd hh:mm:ss");
       },
       arrayLength(arr){
         return arr?arr.length:0;
@@ -142,11 +142,10 @@
               _self.transList=res.data.list;
               _self.totalDataNumber = res.data.total;
             }else{
-              _self.$notify({title: '提示',message: '暂无数据',type: 'warning'});
+              _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.noMessage"),type: 'warning'});
             }
-            return;
           }else{
-            _self.$alert('数据获取失败，请检查网络链接', '提示', {confirmButtonText: '确定'});
+            _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
           }
         });
       }

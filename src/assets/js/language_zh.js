@@ -47,7 +47,7 @@ module.exports = {
   outPieceAccount:{
     number: '序号',
     address: '地址',
-    blockReward: '块收益',
+    blockReward: '出块数量',
     reward: '收益',
     lastRewardBlock: '最后收获的区块 ',
     consensusStatus: '当前共识状态'
@@ -64,7 +64,7 @@ module.exports = {
     consensusFormatter:{
       i1: "等待共识",
       i2: "共识中",
-      i0: "未知",
+      i0: "未参与",
       inull: "未知",
     }
   },
@@ -121,6 +121,8 @@ module.exports = {
     notice: '提示',
     determine: '确定',
     noMessage: '暂无数据',
+    noBlockMessage: '暂无区块数据',
+    noTransMessage: '暂无交易数据',
     searchFailed: '没有搜索到任何信息',
     searchNull: '请先输入搜索内容',
     consensusDetail: '共识节点详细数据获取失败',

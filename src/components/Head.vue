@@ -74,16 +74,20 @@ function dropdownOutEvent(e) {
 
 export default {
   name: "Head",
-  data() {
-    return {};
-  },
+  data() {return {};},
   methods: {
     change: function(event){
       this.$i18n.locale = event.target.value;
     },
     search: function () {
-      var _self = this;
-      var serchVal = _self.$refs.search.value;
+      var loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      }),
+      _self = this,
+      serchVal = _self.$refs.search.value;
       if(serchVal && serchVal.length>0){
         getSearchDataDetail({key:serchVal},function (res) {
           if(res.success){
@@ -122,6 +126,7 @@ export default {
       }else{
         _self.$notify({title: '提示',message: '请先输入搜索内容',type: 'warning'});
       }
+      loading.close();
       setTimeout(function(){_self.$refs.search.value=""},2000);
     },
     dropdwon: function (e) {

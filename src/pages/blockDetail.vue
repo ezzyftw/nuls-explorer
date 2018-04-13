@@ -29,27 +29,33 @@
       <i class="nuls-img-icon nuls-img-transaction"></i><span>{{transList.length}}{{$t("second.transactions")}}</span>
     </div>
     <ul class="nuls-transaction-list">
-    <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.status)">
-      <p>{{$t("transDetail.transTypeDetail.i"+txlist.status)}}</p>
+    <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.type)">
+      <p>{{$t("transDetail.transTypeDetail.i"+txlist.type)}}</p>
 
       <p><span><router-link :to="{path:'/transactionHash',query:{hash:txlist.hash}}">{{txlist.hash}}</router-link></span><span>{{txlist.time | formatDate}}</span></p>
-      <p><span>{{$t("second.block")}}：<router-link :to="{path:'/blockDetail',query:{height:txlist.blockHeight}}">{{txlist.blockHeight}}</router-link></span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;<a>{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</a></span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
+      <p><span>{{$t("second.block")}}：
+        {{txlist.blockHeight}}
+      </span><span>{{$t("second.enter")}}/{{$t("second.outPut")}}：&nbsp;{{txlist.inputs|arrayLength}}/{{txlist.outputs|arrayLength}}</span><span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span></p>
       <template v-if="txlist.inputs[0] || txlist.outputs[0]">
         <div class="w100" :class="showScroll==0?'scrollHeight':'hideHeight'">
           <div class="w25 float_left">
             <p v-if="!txlist.inputs[0]">&nbsp;</p>
-            <p v-for="inputlist in txlist.inputs"><span><router-link to="/accountInfo">{{inputlist.address}}</router-link></span></p>
+            <p v-for="inputlist in txlist.inputs"><span>
+              <router-link :to="{path:'/accountInfo',query:{address:inputlist.address}}">{{inputlist.address}}</router-link>
+            </span></p>
           </div>
           <div class="w20 float_left center">
             <i class="nuls-img-icon nuls-img-right-action"></i>
           </div>
           <div class="w55 float_left">
-            <p v-for="outputlist in txlist.outputs"><span><router-link to="/accountInfo">{{outputlist.address}}</router-link></span><span>{{outputlist.value|getInfactCoin}} NULS</span></p>
+            <p v-for="outputlist in txlist.outputs"><span>
+              <router-link :to="{path:'/accountInfo',query:{address:outputlist.address}}">{{outputlist.address}}</router-link>
+            </span><span>{{outputlist.value|getInfactCoin}} NULS</span></p>
           </div>
         </div>
       </template>
       <div class="clear"></div>
-      <p><span>{{$t("second.amount")}}：{{txlist | formatTxAmount}} NULS</span></p>
+      <p><span>{{$t("second.amount")}}{{txlist | formatTxAmount}} NULS</span></p>
       <div v-if="txlist.inputs[5] || txlist.outputs[5]" class="list-foot"><a @click="showmore(key)"><i class="nuls-img-icon nuls-img-three-point pointer"></i></a></div>
     </li>
     </ul>
@@ -115,7 +121,7 @@ export default {
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm");
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     arrayLength(arr) {
       return arr ? arr.length : 0;
@@ -162,7 +168,6 @@ export default {
     });
   },
   methods: {
-
     formatTxClass: function (status) {
       return formatTxClass(status);
     },
@@ -181,26 +186,26 @@ export default {
     },
     nulsBlockDetail: function(){
       var _self = this;
-      if(_self.height && _self.height>=0){
+      if(_self.height!=undefined && _self.height>=0){
         getBlockHeaderDetailByHeight({"height":_self.height},function(res){
           if (res.success) {
             _self.blockheader = res.data;
             _self.hash = res.data.hash;
-            return;
+          }else{
+            _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
           }
-          _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
-        })
+        });
+        return false;
       }else{
         getBlockHeaderDetailByHash({"hash":_self.hash},function(res){
           if (res.success) {
             _self.blockheader = res.data;
             _self.height = res.data.height;
-            return;
           }
           _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
-        })
+        });
+        return false;
       }
-
     },
     nulstxlist: function (pageNumber) {
       var _self = this;

@@ -41,6 +41,10 @@ export function getBlockListAddressAll(param,callback){
 export function getTxhistoryList(callback){
   return m(nuls_api.getTxhistory,callback);
 }
+export function getTxSpentHashDetail(param,callback){
+  return m(nuls_api.getTxSpentHash,callback,param);
+}
+
 export function getSearchDataDetail(param,callback){
   return n(nuls_api.getSearchData,callback,param);
 }

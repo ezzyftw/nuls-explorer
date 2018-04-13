@@ -64,7 +64,7 @@ module.exports = {
     consensusFormatter:{
       i1: "Waiting for consensus",
       i2: "Consensus",
-      i0: "unknown",
+      i0: "Not join",
       inull: "unknown",
     }
   },
@@ -121,6 +121,8 @@ module.exports = {
     notice: 'Notice',
     determine: 'Determine',
     noMessage: 'No message',
+    noBlockMessage: 'No Block Message',
+    noTransMessage: 'No Trans Message',
     searchFailed: 'No information found',
     searchNull: 'Please enter search content first',
     consensusDetail: 'Consensus node details data acquisition failed',

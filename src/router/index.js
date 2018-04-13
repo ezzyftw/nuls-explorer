@@ -12,6 +12,7 @@ import pieceOfAccount from '@/pages/pieceOfAccount'
 import accountInfo from '@/pages/accountInfo'
 import consensusNode from '@/pages/consensusNode'
 import cashAccount from '@/pages/cashAccount'
+import notFond from '@/pages/notFond'
 
 
 Vue.use(Router);
@@ -20,26 +21,27 @@ Vue.use(Router);
 export default new Router({
   mode: 'history',
   routes: [
-
     {
       path: '/',
       name: 'major',
-      component: major
-      , children: [
-        {path: "/", component: home}
-        , {path: "/index", component: home}
-        , {path: "/home", component: home}
-        , {path: "/transactionRecord", component: transactionRecord}
-        , {path: "/blockList", component: blockList}
-        , {path: "/transactionHash", component: transactionHash}
-        , {path: "/blockDetail", component: blockDetail}
-        , {path: "/pieceOfAccount", component: pieceOfAccount}
-        , {path: "/accountInfo", component: accountInfo}
-        , {path: "/consensusNode", component: consensusNode}
-        , {path: "/cashAccount", component: cashAccount}
+      component: major,
+      children: [
+        {path: "/", component: home},
+        {path: "/index", component: home},
+        {path: "/home", component: home},
+        {path: "/transactionRecord", component: transactionRecord},
+        {path: "/blockList", component: blockList},
+        {path: "/transactionHash", component: transactionHash},
+        {path: "/blockDetail", component: blockDetail},
+        {path: "/pieceOfAccount", component: pieceOfAccount},
+        {path: "/accountInfo", component: accountInfo},
+        {path: "/consensusNode", component: consensusNode},
+        {path: "/cashAccount", component: cashAccount},
 
       ]
-    }
+    },
+    {path: "/notFond", component: notFond},
+    {path: "*",component: notFond }
   ]
   ,scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }

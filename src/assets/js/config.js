@@ -10,6 +10,7 @@ export let nuls_defaultType={
 export let nuls_api= {
   getbalance: "/nuls/report/balance",
   getTxByHash: "/nuls/tx/hash",
+  getTxSpentHash: "/nuls/tx/hash/spent",
   getTxList: "/nuls/tx/list",
   getBlockByHash: "/nuls/block/hash",
   getBlockByHeight: "/nuls/block/height",
