@@ -8,6 +8,7 @@
     </nav>
     <div class="nuls-title">{{$t("nav.currencyAccount")}}</div>
     <div>
+      <!--cash list start-->
       <ul class="nuls-ul-table">
         <li class="head">
           <span>
@@ -47,6 +48,7 @@
           </span>
         </li>
       </ul>
+      <!--cash list end-->
     </div>
   </div>
 </template>
@@ -57,7 +59,7 @@
     name: "cashAccount",
     data () {
       return {
-        blockList: [{id:0,address:'',balance:'',txCount:0,createTime:0}],
+        blockList: [{id:0,address:'',balance:'',txCount:0,createTime:''}],
         totalDataNumber: 0,
         pageSize: 20,
       }
@@ -65,7 +67,7 @@
     filters: {
       formatDate(time) {
         var date = new Date(time);
-        return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+        return formatDate(date);
       },
       getInfactCoin(count){
         return getInfactCoin(count);
@@ -78,6 +80,10 @@
       this.nulsGetBalanceListRank();
     },
     methods: {
+      /*
+      * Load currency list, page load
+      * 加载持币列表，分页加载
+      */
       nulsGetBalanceListRank(pageNumber){
         var _self = this;
         getBalanceListRank({"pageNumber":pageNumber,"pageSize":_self.pageSize},function(res){

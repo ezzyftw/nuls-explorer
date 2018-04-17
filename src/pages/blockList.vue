@@ -9,6 +9,8 @@
     <div class="nuls-title">
       {{$t("blockList.blockList")}}
     </div>
+
+    <!--block list start-->
     <div>
       <ul class="nuls-ul-table">
         <li class="head">
@@ -57,6 +59,7 @@
       </ul>
 
     </div>
+    <!--block list end-->
   </div>
 </template>
 
@@ -67,7 +70,7 @@
     name: "blockList",
     data () {
       return {
-        blockList: [{height:0,time:'2018-01-01 00:00:00',packingAddress:'xxxxxx',txCount:0,reward:0,size:0}],
+        blockList: [{height:0,time:'',packingAddress:' ',txCount:0,reward:0,size:0}],
         totalDataNumber: 0,
         pageSize: 20
       }
@@ -75,7 +78,7 @@
     filters: {
       formatDate(time) {
         var date = new Date(time);
-        return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+        return formatDate(date);
       },
       formatString(str){
         return formatString(str);
@@ -88,6 +91,10 @@
       this.nulsGetBlockList();
     },
     methods: {
+      /*
+      *Loading block list, paging loading
+      *加载区块列表，分页加载
+      */
       nulsGetBlockList(pageNumber){
         var _self = this;
         getBlockList({"pageNumber":pageNumber,"pageSize":_self.pageSize},function(res){

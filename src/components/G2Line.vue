@@ -1,10 +1,10 @@
 <template>
+  <!--Vuejs2.X g2 Chart components-->
+  <!--npm install --save-dev g2-->
   <div :id="id"></div>
 </template>
-
 <script>
   import G2 from 'g2';
-
   G2.Global.setTheme('dark');
   export default {
     data() {return {};},
@@ -23,7 +23,6 @@
       this.drawChart(this.$props.charData);
     },
     beforeUpdate: function () {
-//      this.drawChart();
     },
     watch: {
       charData: function (val, oldVal) {
@@ -63,11 +62,9 @@
             formatter: val => {
               if(val){
                 var valueDate=new Date(val);
-                return (valueDate.getFullYear()+"-"+(parseInt(valueDate.getMonth())+1)+"-"+valueDate.getDay());
-              }else{
-                return "";
+                return ((parseInt(valueDate.getMonth())+1)+"-"+valueDate.getDate());
               }
-
+              return "";
             },
             nice: false
           }
@@ -81,7 +78,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

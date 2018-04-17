@@ -13,6 +13,7 @@ import accountInfo from '@/pages/accountInfo'
 import consensusNode from '@/pages/consensusNode'
 import cashAccount from '@/pages/cashAccount'
 import notFond from '@/pages/notFond'
+import loadSearch from '@/pages/loadSearch'
 
 
 Vue.use(Router);
@@ -33,11 +34,12 @@ export default new Router({
         {path: "/blockList", component: blockList},
         {path: "/transactionHash", component: transactionHash},
         {path: "/blockDetail", component: blockDetail},
+        /*{path: "/blockDetail:height",name:"/blockDetail", component: blockDetail},*/
         {path: "/pieceOfAccount", component: pieceOfAccount},
         {path: "/accountInfo", component: accountInfo},
         {path: "/consensusNode", component: consensusNode},
         {path: "/cashAccount", component: cashAccount},
-
+        {path: "/loadSearch", component: loadSearch},
       ]
     },
     {path: "/notFond", component: notFond},

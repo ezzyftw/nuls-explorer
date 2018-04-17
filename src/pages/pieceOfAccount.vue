@@ -10,17 +10,18 @@
       {{$t("nav.outPieceAccount")}}
     </div>
     <div>
+      <!--list start-->
       <ul class="nuls-ul-table" ref="contentInfo">
         <li class="head">
           <span>
             <ul class="nuls-ul-sub-table">
               <li>
-                          <span>{{$t("outPieceAccount.number")}}</span>
-          <span >{{$t("outPieceAccount.address")}}</span>
-          <span>{{$t("outPieceAccount.blockReward")}}</span>
-          <span>{{$t("outPieceAccount.reward")}}</span>
-          <span>{{$t("outPieceAccount.lastRewardBlock")}}</span>
-          <span>{{$t("outPieceAccount.consensusStatus")}}</span>
+                <span>{{$t("outPieceAccount.number")}}</span>
+                <span >{{$t("outPieceAccount.address")}}</span>
+                <span>{{$t("outPieceAccount.blockReward")}}</span>
+                <span>{{$t("outPieceAccount.reward")}}</span>
+                <span>{{$t("outPieceAccount.lastRewardBlock")}}</span>
+                <span>{{$t("outPieceAccount.consensusStatus")}}</span>
               </li>
             </ul>
           </span>
@@ -31,7 +32,7 @@
             <ul class="nuls-ul-sub-table">
               <li v-for="(block,key) in blockList">
                 <span>{{key+1}}</span>
-                <span><router-link :to="{path:'/consensusNode',query:{address:block.consensusAddress,type:2}}">{{block.consensusAddress | formatString}}</router-link></span>
+                <span><router-link :to="{path:'/consensusNode',query:{address:block.agentAddress,type:1}}">{{block.agentAddress | formatString}}</router-link></span>
                 <span>{{block.minedCount}}</span>
                 <span>{{block.reward | getInfactCoin}}</span>
                 <span>{{block.lastHeight}}</span>
@@ -54,6 +55,7 @@
           </span>
         </li>
       </ul>
+      <!--list end-->
     </div>
   </div>
 </template>
@@ -65,7 +67,7 @@
     name: "pieceOfAccount",
     data () {
       return {
-        blockList: [{id:0,consensusAddress:'',minedCount:'',reward:0,lastHeight:0,consensusStatus:0,createTime:''}],
+        blockList: [{id:0,consensusAddress:'',minedCount:'',reward:0,lastHeight:0,consensusStatus:0,createTime:'',agentAddress:''}],
         totalDataNumber: 0,
         pageSize: 20
       }
@@ -85,6 +87,10 @@
       this.nulsGetMinedlist();
     },
     methods: {
+      /**
+       * 加载所有出块账户列表，分页加载
+       * Load all out of block account list, page load
+       */
       nulsGetMinedlist(pageNumber){
         var _self = this;
         getAddressMinedlist({"pageNumber":pageNumber,"pageSize":_self.pageSize},function(res){

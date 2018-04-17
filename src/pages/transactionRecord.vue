@@ -10,6 +10,7 @@
     <div class="nuls-title">
       {{$t("second.transaction")}}
     </div>
+    <!-- transaction list start -->
     <ul class="nuls-transaction-list" ref="contentInfo">
       <!--class="yellow-card"-->
     <li v-for="(txlist,key) in transList" v-bind:class="formatTxClass(txlist.type)">
@@ -38,8 +39,9 @@
     <div class="clear"></div>
     <p><span>{{$t("second.amount")}}{{txlist | formatTxAmount}} NULS</span></p>
     <div v-if="txlist.inputs[5] || txlist.outputs[5]" class="list-foot"><a @click="showmore(key)"><i class="nuls-img-icon nuls-img-three-point pointer"></i></a></div>
-</li>
+    </li>
     </ul>
+    <!-- transaction list end -->
     <div class="text-align-right">
     <el-pagination
       background
@@ -70,7 +72,7 @@
           hash: '',
           type: '',
           index: '',
-          time: '2018-01-01 00:00:00',
+          time: '',
           blockHeight: '',
           fee: '',
           value: '',
@@ -96,7 +98,7 @@
     filters: {
       formatDate(time) {
         var date = new Date(time);
-        return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+        return formatDate(date);
       },
       arrayLength(arr){
         return arr?arr.length:0;
@@ -134,6 +136,10 @@
       showmore: function(v){
         this.showScroll =this.showScroll=== -1?v:-1;
       },
+      /**
+       * 加载交易记录列表
+       * Load transaction list
+       */
       nulstxlist:function(pageNumber){
         var _self = this;
         getTxList({"pageNumber":pageNumber,"pageSize":_self.pageSize,"type":1},function(res){
@@ -155,6 +161,4 @@
 </script>
 
 <style>
-.hideHeight{max-height: 130px;overflow: hidden}
-.scrollHeight{height: auto;}
 </style>

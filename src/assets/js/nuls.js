@@ -32,6 +32,9 @@ export function getAccountByAddress(param,callback){
 export function getConsensusAgentDetail(param,callback){
   return n(nuls_api.getConsensusAgent,callback,param);
 }
+export function getBlockBesthashDetail(callback){
+  return n(nuls_api.getBlockBesthash,callback);
+}
 export function getConsensusAgentListAll(param,callback){
   return m(nuls_api.getConsensusAgentList,callback,param);
 }

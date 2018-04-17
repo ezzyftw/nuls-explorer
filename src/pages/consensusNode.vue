@@ -10,18 +10,21 @@
     <div class="nuls-title">
       {{$t("consensusNode.consensusNode")}}
     </div>
-    <ul class="tx_description tx_border tx_background">
+    <!--consensusNode detail start-->
+    <ul class="tx_description tx_border tx_background" v-show="showDetail">
       <li><span class="float_left">{{$t("consensusNode.accountInfo")}}</span>
-        <router-link :to="{path:'/accountInfo',query:{address:consensusDetail.packingAddress}}">{{consensusDetail.packingAddress}}</router-link>
+        <router-link class="float_right" :to="{path:'/accountInfo',query:{address:consensusDetail.agentAddress}}">{{consensusDetail.agentAddress}}</router-link>
       </li>
-      <li><span class="float_left">{{$t("consensusNode.blockAddress")}}</span><span  class="float_right">{{consensusDetail.agentAddress}}</span></li>
+      <li><span class="float_left">{{$t("consensusNode.blockAddress")}}</span><span  class="float_right">{{consensusDetail.packingAddress}}</span></li>
       <li><span class="float_left">{{$t("consensusNode.nodeName")}}</span><span  class="float_right">{{consensusDetail.agentName}}</span></li>
       <li><span class="float_left">{{$t("consensusNode.consensusStatus")}}</span><span class="float_right">{{consensusDetail.status|formatConsensusStatus}}</span></li>
       <li><span class="float_left">{{$t("consensusNode.blockCount")}}</span><span class="float_right">{{consensusDetail.packedCount}} blocks</span></li>
-      <li><span class="float_left">{{$t("consensusNode.transactionCount")}}</span><span class="float_right">{{consensusDetail.creditRatio}} txns</span></li>
+      <li><span class="float_left">{{$t("consensusNode.transactionCount")}}</span><span class="float_right">{{consensusDetail.txCount}} txns</span></li>
       <li><span class="float_left">{{$t("consensusNode.margin")}}</span><span class="float_right">{{consensusDetail.owndeposit|getInfactCoin}} NULS</span></li>
     </ul>
+    <!--consensusNode detail end-->
     <div style="height:40px;"></div>
+    <!--consensusNode block list start-->
     <ul class="nuls-ul-table">
       <li class="head">
         <span>
@@ -35,7 +38,6 @@
             </li>
           </ul>
         </span>
-
       </li>
       <li class="content">
         <span>
@@ -64,6 +66,7 @@
           </span>
       </li>
     </ul>
+    <!--consensusNode block list end-->
   </div>
 </template>
 <script>
@@ -73,6 +76,7 @@ export default {
   name: "blockDetail",
   data () {
     return {
+      showDetail: false,
       consensusDetail: {agentId:'',agentAddress:'',agentName:'',status:'',packingAddress:'',packedCount:'',totalDeposit:'',owndeposit:''},
       blockList: [{height:0,time:'',packingAddress:'',txCount:0,reward:0,size:0}],
       totalDataNumber: 0,
@@ -84,7 +88,7 @@ export default {
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+      return formatDate(date);
     },
     formatString(str){
       return formatString(str);
@@ -103,6 +107,10 @@ export default {
     this.nulsGetConsensusDetail();
   },
   methods: {
+    /**
+     * 根据出块节点加载出块列表，分页加载
+     * Load block list according to the block node, page load
+     */
     nulsGetBlockList(pageNumber){
       var _self = this;
       getBlockListAddressAll({"pageNumber":pageNumber,"pageSize":_self.pageSize,"address":_self.address,"type":_self.type},function(res){
@@ -116,18 +124,19 @@ export default {
         }
       });
     },
+    /**
+     * 获取共识节点详情
+     * Get consensus node details
+     */
     nulsGetConsensusDetail(){
       var _self = this;
       getConsensusAgentDetail({"address":_self.address},function(res){
         if(res.success){
           if(res.data){
             _self.consensusDetail = res.data;
-          }else{
-            _self.$notify({title: _self.$t("notice.notice"),message: _self.$t("notice.consensusDetail"),type: 'warning'});
+            _self.showDetail = true;
           }
-          return;
         }
-        _self.$alert(_self.$t("notice.noNet"), _self.$t("notice.notice"), {confirmButtonText: _self.$t("notice.determine")});
       });
     }
   }

@@ -95,11 +95,12 @@ module.exports = {
       i4: "Unlock transaction",
       i5: "Change",
       i11: "Set up an alias",
-      i90: "Registration Consensus",
+      i90: "Registration consensus",
       i91: "Join consensus",
       i92: "Withdraw from the consensus",
       i93: "Yellow card penalty",
-      i94: "Red card penalty"
+      i94: "Red card penalty",
+      i95: "Stop consensus"
     },
   },
   page:{
