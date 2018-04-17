@@ -51,7 +51,7 @@
         <span>{{$t("second.fee")}}：{{txlist.fee|getInfactCoin}} NULS</span>
       </p>
       <template v-if="txlist.inputs[0] || txlist.outputs[0]">
-        <div class="w100" :class="showScroll==0?'scrollHeight':'hideHeight'">
+        <div class="w100" :class="showScroll==key?'scrollHeight':'hideHeight'">
           <div class="w25 float_left">
             <p v-if="!txlist.inputs[0]">&nbsp;</p>
             <p v-for="inputlist in txlist.inputs">
@@ -96,7 +96,7 @@
 
 <script>
 import {getTxList,getBlockHeaderDetailByHeight,getBlockHeaderDetailByHash,getBlockBesthashDetail} from "../assets/js/nuls.js";
-import {formatDate,getInfactCoin,formatTxClass} from '../assets/js/util.js';
+import {formatDate,getInfactCoin,formatTxClass,getTransactionResultAmount} from '../assets/js/util.js';
 export default {
   name: "blockDetail",
   data() {
@@ -152,19 +152,7 @@ export default {
     *Calculate the input of this transaction minus the balance after output
     */
     formatTxAmount(txlist){
-      var outputlist = txlist.outputs,inputlist = txlist.inputs,amout = 0,inplength = inputlist.length,outlength = outputlist.length;
-      for(var i=0;i < outlength;i++){
-        var txout = outputlist[i];
-        amout+= txout.value;
-        for(var j=0;j < inplength;j++){
-          var txin = inputlist[j];
-          if(txin.address == txout.address){
-            amout-= txout.value;
-            break;
-          }
-        }
-      }
-      return getInfactCoin(amout);
+      return getInfactCoin(getTransactionResultAmount(txlist));
     },
     getInfactCoin(count) {
       return getInfactCoin(count);

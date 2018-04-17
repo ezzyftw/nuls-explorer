@@ -88,7 +88,7 @@
 
 <script>
 import {getAccountByAddress,getTxList} from "../assets/js/nuls.js";
-import {formatDate,getInfactCoin,formatTxClass} from '../assets/js/util.js';
+import {formatDate,getInfactCoin,formatTxClass,getTransactionResultAmount} from '../assets/js/util.js';
 import {brotherComponents} from '../assets/js/public.js';
     export default {
       name: "blockDetail",
@@ -149,19 +149,7 @@ import {brotherComponents} from '../assets/js/public.js';
         *Calculate the input of this transaction minus the balance after output
         */
         formatTxAmount(txlist){
-          var outputlist = txlist.outputs,inputlist = txlist.inputs,amout = 0,inplength = inputlist.length,outlength = outputlist.length;
-          for(var i=0;i < outlength;i++){
-            var txout = outputlist[i];
-            amout+= txout.value;
-            for(var j=0;j < inplength;j++){
-              var txin = inputlist[j];
-              if(txin.address == txout.address){
-                amout-= txout.value;
-                break;
-              }
-            }
-          }
-          return getInfactCoin(amout);
+          return getInfactCoin(getTransactionResultAmount(txlist));
         },
         getInfactCoin(count){
           return getInfactCoin(count);

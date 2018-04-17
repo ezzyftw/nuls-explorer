@@ -8,7 +8,7 @@ function g(){
   return {"success":true,"code":10000,"msg":arguments[0]||""};
 }
 function v(p){
-  return nuls_server.n1.host+p;
+  return nuls_server.nodeList[0].host+nuls_server.requestMain+p;
 }
 export function m(url,callback,param){
   axios.get(v(url),{params:param||{}}).then(function (response){

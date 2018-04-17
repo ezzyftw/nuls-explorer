@@ -103,6 +103,37 @@ export function getInfactCoin(count){
   var total = (Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)).toString();
   return total.split('.')[1]?total.split('.')[1].length==1? total+"0":total:total+".00";
 };
+export function getTransactionResultAmount(txlist){
+  var outputlist = txlist.outputs,inputlist = txlist.inputs,amout = 0,inplength = inputlist.length,outlength = outputlist.length;
+  if(inplength > outlength){
+    for(var i=0;i < outlength;i++){
+      amout+= outputlist[i].value;
+    }
+    for(var j=0;j < inplength;j++){
+      var inputObject = inputlist[j];
+      for(var i=0;i < outlength;i++){
+        var outputObject = outputlist[i];
+        if(inputObject.address == outputObject.address){
+          amout-= outputObject.value;
+          break;
+        }
+      }
+    }
+  }else{
+    for(var i=0;i < outlength;i++){
+      var txout = outputlist[i];
+      amout+= txout.value;
+      for(var j=0;j < inplength;j++){
+        var txin = inputlist[j];
+        if(txin.address == txout.address){
+          amout-= txout.value;
+          break;
+        }
+      }
+    }
+  }
+  return amout;
+}
 export function formatDate(date, fmt) {
   if(!date){
     return "";
@@ -132,3 +163,5 @@ export function formatDate(date, fmt) {
 function padLeftZero(str) {
   return ('00' + str).substr(str.length);
 }
+
+
